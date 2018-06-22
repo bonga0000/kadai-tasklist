@@ -14,11 +14,16 @@
                 <p>{!! nl2br(e($task->status)) !!}</p>
                 
             </div>
-            <div>
+            <div class='btn-toolbar'>
                 @if(Auth::id() == $task->user_id)
+                <div class="btn-group">
+                {!! link_to_route('tasks.edit', 'Edit', ['id' => $task->id],['class' => 'btn btn-success btn-xs']) !!}
+                </div>
+                <div class="btn-group">
                 {!! Form::open(['route' => ['tasks.destroy',$task->id],'method' =>'delete']) !!}
                    {!! Form::submit('Delete', ['class' => 'btn btn-danger btn-xs']) !!}
                 {!! Form::close() !!}
+                </div>
                 @endif
             </div>
         </div>
