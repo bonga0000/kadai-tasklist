@@ -3,7 +3,7 @@
 @section('content')
    <div class="row">
        <aside class='col-xs-4'>
-           <div class="panel panel-defualt">
+           <div class="panel panel-default">
                <div class="panel-heading">
                    <h3 class="panel-title">{{ $user->name }}</h3>
                </div>
@@ -14,10 +14,26 @@
        </aside>
        <div class="col-xs-8">
            <ul class="nav nav-tabs nav-justified">
-               <li><a href='#'>TimeLine</a></li>
+               <li role="presentation" class="{{ Request::is('users/' . $user->id) ? 'active' : '' }}"><a href="{{ route('users.show',['id' => $user->id]) }}">TimeLine<span class='badge'>{{ $count_tasks }}</span></a></li>
                <li><a href='#'>Followings</a></li>
                <li><a href='#'>Followers</a></li>
            </ul>
+           @if (Auth::id() == $user->id)
+               {!! Form::open(['route' => 'tasks.store']) !!}
+                  <div class="form-group">
+                     <span class="text-muted"><span class='badge'>★</span>Task</span>
+                     {!! Form::textarea('content',old('content'),['class' => 'form-control', 'rows' => '2']) !!}
+                  </div>
+                  <div class="form-group">
+                     <span class="text-muted"><span class='badge'>★</span>Status</span>
+                     {!! Form::textarea('status',old('content'),['class' => 'form-control', 'rows' => '2']) !!}
+                     {!! Form::submit('Post', ['class' => 'btn btn-primary btn-block']) !!}
+                  </div>
+               {!! Form::close() !!}
+           @endif
+           @if(count($tasks) >0)
+               @include('tasks.tasks',['tasks' => $tasks])
+           @endif
        </div>
    </div>
 @endsection
